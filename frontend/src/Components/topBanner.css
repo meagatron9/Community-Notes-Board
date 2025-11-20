@@ -1,0 +1,63 @@
+.top-banner {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #2b2b2b;
+  padding: 14px 20px;
+  margin-top: 0px;
+  border-radius: 0px;
+  color: #fff;
+
+  margin-bottom: 10px;
+}
+
+.banner-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.banner-field {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+
+.banner-field label {
+  font-size: 0.75rem;
+  color: #bbb;
+}
+
+.banner-field input {
+  background: #3d3d3d;
+  border: none;
+  padding: 6px 10px;
+  color: white;
+  border-radius: 6px;
+  width: 180px;
+  font-size: 0.85rem;
+}
+
+.banner-display-box {
+  background: #3d3d3d;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: white;
+  width: 180px;
+  font-size: 0.85rem;
+}
+
+.join-board-btn {
+  background: #444;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.join-board-btn:hover {
+  background: #666;
+}

@@ -1,40 +1,185 @@
 .dashboard-wrapper {
   width: 100%;
   padding: 20px;
+  padding-top: 0px;
   text-align: center;
 }
 
-/* Board container */
+.dashboard-wrapper > .top-banner{
+  margin-left: -20px;
+  margin-right: -20px;
+  width: calc(100% + 40px)
+}
+
 .notes-board {
   margin-top: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 5px;
   width: 100%;
   height: 75vh;
-  border: 2px dashed #bbb;
+  border: 2px dashed #353535;
   position: relative;
   overflow: hidden;
 }
 
-/* Controls layout */
+/* controls row */
 .note-controls {
   margin: 20px auto;
   width: 1000px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  gap: 12px;
+  gap: 25px;
 }
 
-/* Input Box */
-.note-input {
+.note-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+
+/* rich text editor */
+.note-editor {
   width: 700px;
-  height: 80px;
-  padding: 12px;
+  min-height: 80px;
+  padding: 12px 16px;
   font-size: 1rem;
   border-radius: 25px;
+  border: none;
+  outline: none;
+  background-color: var(--note-color, #ffffff);
+  color: #222;
+  overflow-y: auto;
+  text-align: left;
+  line-height: var(--line-height, 1.4rem);
+  position: relative;
+  z-index: 2;
 }
 
-/* Color selector icon button */
+.note-editor:empty:before {
+  content: attr(data-placeholder);
+  color: #888;
+}
+
+/* backgrounds (shared with sticky notes) */
+.note-style-plain {
+  background-image: none;
+}
+
+.note-style-lined {
+  --line-height: 1.4rem;
+  line-height: var(--line-height);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(var(--line-height) - 1px),
+    rgba(40, 40, 40, 0.3) calc(var(--line-height) - 1px),
+    rgba(40, 40, 40, 0.3) var(--line-height)
+  );
+}
+
+.note-style-grid {
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      rgba(40, 40, 40, 0.2) 0,
+      rgba(40, 40, 40, 0.2) 1px,
+      transparent 1px,
+      transparent 15px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(40, 40, 40, 0.2) 0,
+      rgba(40, 40, 40, 0.2) 1px,
+      transparent 1px,
+      transparent 15px
+    );
+}
+
+.char-count {
+  font-size: 0.75rem;
+  color: #ccc;
+  align-self: flex-end;
+}
+
+/* toolbar */
+.text-style-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 0px;
+
+}
+
+.text-style-btn {
+  width: fit-context;
+  height: 28px;
+  border-radius: 25px;
+  border: none;
+  background: #3d3d3d;
+  color: #fff;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding:10px;
+}
+
+/* font dropdown */
+.font-dropdown {
+  position: relative;
+}
+
+.font-menu {
+  position: absolute;
+  top: 36px;
+  left: 0;
+  width: 180px;
+  background: #2c2c2c;
+  border-radius: 10px;
+  padding: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  z-index: 50;
+}
+
+.font-search {
+  width: 100%;
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: none;
+  margin-bottom: 6px;
+  font-size: 0.75rem;
+}
+
+.font-options {
+  max-height: 150px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.font-option {
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  color: #f7f7f7;
+  padding: 4px 2px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.font-option:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* palette + arc */
+.color-wrapper {
+  position: relative;
+}
+
 .color-btn {
   width: 36px;
   height: 36px;
@@ -45,28 +190,74 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #f7f7f7;
 }
 
-/* Popup of color options */
-.color-popup {
+/* centered on palette; dots translated from here */
+.color-arc {
   position: absolute;
-  margin-top: 100px;
-  display: flex;
-  gap: 10px;
-  z-index: 10;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 40;
 }
 
-/* Each color dot */
-.color-circle {
-  width: 34px;
-  height: 34px;
+.option-dot {
+  position: absolute;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   cursor: pointer;
-  border: 2px solid white;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  pointer-events: auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  border: 2px solid #ffffff;
 }
 
-/* Add button */
+/* plain colors */
+.color-dot {
+  border-color: #ffffff;
+}
+
+/* style icons */
+.style-dot {
+  background-color: transparent !important;
+  border-color: #000000;
+}
+
+/* horizontal line icon */
+.style-lined {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 4px,
+    #000 4px,
+    #000 5px
+  );
+}
+
+/* grid icon */
+.style-grid {
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      #000 0,
+      #000 1px,
+      transparent 1px,
+      transparent 6px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      #000 0,
+      #000 1px,
+      transparent 1px,
+      transparent 6px
+    );
+}
+
+/* add note */
 .add-btn {
   padding: 10px 18px;
   background: #333;
@@ -77,46 +268,78 @@
   border-radius: 18px;
 }
 
+/* anchor the arc to the paint button */
 .color-wrapper {
   position: relative;
+  display: inline-block;
 }
 
-/* Radial wheel container */
-.color-wheel {
+/* arc container sits exactly on the paint button center */
+
+
+/* each dot */
+
+
+.color-arc .option-dot {
+  pointer-events: auto;
+}
+
+/* style dots (lined + grid) */
+.style-dot {
+  background: transparent;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
+
+.style-dot {
+  background-color: transparent !important;
+  border: 2px solid white;
+}
+
+.style-lined {
+  background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 6px,
+      black 6px,
+      black 7px
+  );
+}
+
+.style-grid {
+  background-image:
+      repeating-linear-gradient(to right, black 0, black 1px, transparent 1px, transparent 8px),
+      repeating-linear-gradient(to bottom, black 0, black 1px, transparent 1px, transparent 8px);
+}
+
+
+.color-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.color-arc {
   position: absolute;
   top: 50%;
   left: 50%;
-  
-  width: 140px;
-  height: 140px;
-
+  width: 0;
+  height: 0;
   transform: translate(-50%, -50%);
-  
-  border-radius: 50%;
-  pointer-events: none; /* wheel doesn't block dragging */
-  
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  z-index: 30;
+  pointer-events: none;
+  z-index: 40;
 }
 
-/* Each color dot placed radially */
-.color-dot {
-  --distance: 25px;   /* radial distance from center */
-  
+.option-dot {
   position: absolute;
-  width: 15px;
-  height: 15px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  
   border: 2px solid white;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-  
+  pointer-events: auto;
   cursor: pointer;
-  pointer-events: auto; /* allow clicking */
-  
-  /* Radial positioning */
-  transform: rotate(calc(var(--i) * 360deg / 4)) translate(var(--distance)) rotate(calc(var(--i) * -360deg / 4));
+  box-sizing: border-box;
 }
+

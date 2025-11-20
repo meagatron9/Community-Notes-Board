@@ -1,0 +1,53 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5000;
+}
+
+.modal-box {
+  background: #2d2d2d;
+  padding: 25px;
+  border-radius: 12px;
+  width: 360px;
+  color: white;
+  text-align: center;
+}
+
+.modal-input {
+  width: 90%;
+  padding: 8px 10px;
+  margin-top: 14px;
+  background: #3d3d3d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+}
+
+.modal-buttons {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.modal-join-btn,
+.modal-cancel-btn {
+  padding: 8px 14px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.modal-join-btn {
+  background: #5b8dfd;
+  color: white;
+}
+
+.modal-cancel-btn {
+  background: #555;
+  color: white;
+}
